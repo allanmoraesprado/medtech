@@ -1,0 +1,88 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using Infraestructure.StatusSistema;
+
+@inject IHttpContextAccessor httpContext;
+@model MedViewModel
+
+@{
+    var nivelAcesso = 0;
+    try
+    {
+        nivelAcesso = (int)httpContext.HttpContext.Session.GetInt32(Session.Autorizacao);
+    }
+    catch
+    {
+        httpContext.HttpContext.Response.Redirect("../Usuario");
+    }
+    var color = "red";
+    if (ViewData["Retorno"] != null)
+    {
+        if (ViewData["Retorno"].ToString().ToLower().Contains("sucesso"))
+            color = "green";
+    }
+}
+
+<link rel="stylesheet" href="~/css/styles.css">
+        @{
+            if (nivelAcesso > 1)
+            {
+                <div id="main-container">
+                    <div class="fadeIn first">
+                        <span style="text-align:center; display:block">
+                            <img src="~/img/logo.png" style="width:50%; height:50%;" id="icon" alt="Logo" />
+                        </span>
+                    </div>
+                    <h1>Gerenciar fichas</h1><br />
+                    <form asp-controller="Ficha" method="post">
+                        <input asp-for="Id" type="text" class="fadeIn second" placeholder="Ficha ID" minlength="1" maxlength="20" required>
+                        <span asp-validation-for="Id" class="text-danger"></span>
+                        <input asp-for="NomeMedico" type="text" class="fadeIn second" placeholder="Nome do médico" minlength="4" maxlength="20" required>
+                        <span asp-validation-for="NomeMedico" class="text-danger"></span>
+                        <input asp-for="NomePaciente" type="text" class="fadeIn third" placeholder="Nome do paciente" minlength="4" maxlength="20" required>
+                        <span asp-validation-for="NomePaciente" class="text-danger"></span>                        
+                        <input asp-for="CpfPaciente" type="text" oninput="mascara(this)" class="fadeIn third" placeholder="CPF do paciente" minlength="4" maxlength="20" required>
+                        <span asp-validation-for="CpfPaciente" class="text-danger"></span>
+                        <input asp-for="Detalhes" type="text" class="fadeIn third" placeholder="Descrição" minlength="4" maxlength="20" required>
+                        <span asp-validation-for="Detalhes" class="text-danger"></span>
+                        <br /><br />
+                        <input type="submit" asp-action="Cadastro" class="fadeIn fourth" value="Cadastrar">
+                        <input type="submit" asp-action="Atualizacao" class="fadeIn fourth" value="Alterar">
+                        <input type="submit" asp-action="Delete" class="fadeIn fourth" value="Deletar">
+                        <br />
+                        <span style="color:@color">@ViewData["Retorno"]</span>
+                    </form>
+                </div>
+                <p class="error-validation template"></p>
+                <script src="js/scripts.js"></script>
+            }
+        }
+        <div style="padding-top:50%"></div>
+
+        <script>
+            function mascara(i) {
+
+                var v = i.value;
+
+                if (isNaN(v[v.length - 1])) {
+                    i.value = v.substring(0, v.length - 1);
+                    return;
+                }
+
+                i.setAttribute("maxlength", "14");
+                if (v.length == 3 || v.length == 7) i.value += ".";
+                if (v.length == 11) i.value += "-";
+            }
+
+            const handlePhone = (event) => {
+                let input = event.target
+                input.value = phoneMask(input.value)
+            }
+
+            const phoneMask = (value) => {
+                if (!value) return ""
+                value = value.replace(/\D/g, '')
+                value = value.replace(/(\d{2})(\d)/, "($1) $2")
+                value = value.replace(/(\d)(\d{4})$/, "$1-$2")
+                return value
+            }
+        </script>

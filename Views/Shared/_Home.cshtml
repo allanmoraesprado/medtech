@@ -1,0 +1,41 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using Infraestructure.StatusSistema;
+
+@inject IHttpContextAccessor httpContext;
+@model MedViewModel
+
+@{
+    var nivelAcesso = 0;
+    try
+    {
+        nivelAcesso = (int)httpContext.HttpContext.Session.GetInt32(Session.Autorizacao);
+    }
+    catch
+    {
+        httpContext.HttpContext.Response.Redirect("../Usuario");
+    }
+}
+    <div class="bgmed">
+        <div id="pageintro" class="hoc clear">
+            <article>
+                <p>Saúde em primeiro lugar</p>
+                <h3 class="heading">Atendimento 24h</h3>
+                <p>Cuidando de você, e da sua família.</p>
+                <footer>
+                    <ul class="nospace inline pushright">
+                        @{
+                            if (nivelAcesso > 1)
+                            {
+                                <li><a class="btn" style="float:left" href="../../Ficha">Gerenciar fichas</a></li>
+                                <li><a class="btn" style="float:right" href="../../Ficha/Index/1">Listar fichas</a></li>
+                            }
+                            else
+                            {
+                                <li><a class="btn" href="../../Ficha/Index/1">Minhas fichas</a></li>
+                                }
+                            }
+                        </ul>
+                </footer>
+            </article>
+        </div>
+    </div>

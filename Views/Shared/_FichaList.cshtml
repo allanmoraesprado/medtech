@@ -1,0 +1,64 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using Infraestructure.StatusSistema;
+
+@inject IHttpContextAccessor httpContext;
+
+@{
+    var nivelAcesso = 0;
+    try
+    {
+        nivelAcesso = (int)httpContext.HttpContext.Session.GetInt32(Session.Autorizacao);
+    }
+    catch
+    {
+        httpContext.HttpContext.Response.Redirect("../Usuario");
+    }
+}
+@model IEnumerable<MedViewModel>
+
+<div style="text-align:center; padding-top:5%;">
+    <h2>Fichas médicas</h2>
+    <hr />
+</div>
+<table class="table table-bordered">
+    <thead>
+        <tr style="background-color:#f6f6f6">
+            @{
+                if (nivelAcesso > 1)
+                {
+                    <th>Ficha ID</th>
+                    <th>Nome do paciente</th>
+                }
+                else
+                {
+                    <th>Nome do médico</th>
+                }
+            }
+            <th>Detalhes</th>
+            <th>Data de inclusão</th>
+            <th>Última alteração</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            @{
+                if (nivelAcesso > 1)
+                {
+                    <td>@item.Id</td>
+                    <td>@item.NomePaciente</td>
+                }
+                else
+                {
+                    <td>@item.NomeMedico</td>
+                }
+            }
+            <td>@item.Detalhes</td>
+            <td>@item.DataCriacao</td>
+            <td>@item.DataAlteracao</td>
+        </tr>
+        }
+    </tbody>
+</table>
+<div style="padding-top:40%";></div>

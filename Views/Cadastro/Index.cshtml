@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "Cadastro";
+    Layout = null;
+}
+@model Application.Models.UsuarioViewModel
+
+@{ 
+    var color = "red";
+    if (ViewData["Retorno"] != null)
+    {
+        if (ViewData["Retorno"].ToString().ToLower().Contains("sucesso"))
+            color = "green";
+    }
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MedTech | Cadastro</title>
+    <link rel="stylesheet" href="~/css/styles.css">
+    <link rel="stylesheet" href="~/css/useful.css">
+</head>
+<body>
+    <div class="wrapper fadeInDown">
+        <div id="main-container">
+            <div class="fadeIn first">
+                <span style="text-align:center; display:block">
+                    <img src="~/img/logo.png" style="width:50%; height:50%;" id="icon" alt="Logo" />
+                </span>
+            </div>
+            <h1>Preencha os campos abaixo</h1><br />
+            <form asp-controller="Cadastro" asp-action="Index" method="post">
+                <input asp-for="Usuario" type="text" class="fadeIn second" placeholder="Usuário" minlength="4" maxlength="20" required>
+                <span asp-validation-for="Usuario" class="text-danger"></span>
+                <input asp-for="Senha" type="password" class="fadeIn third" placeholder="Senha" minlength="4" maxlength="20" required>
+                <span asp-validation-for="Senha" class="text-danger"></span>
+                <input asp-for="ConfirmacaoSenha" type="password" class="fadeIn third" placeholder="Confirme a senha" minlength="4" maxlength="20" required>
+                <span asp-validation-for="ConfirmacaoSenha" class="text-danger"></span>
+                <input asp-for="Email" type="email" class="fadeIn third" placeholder="Email" minlength="4" maxlength="60" required>
+                <span asp-validation-for="Email" class="text-danger"></span>
+                <input asp-for="Nome" type="text" class="fadeIn third" placeholder="Nome Completo" minlength="4" maxlength="60" required>
+                <span asp-validation-for="Nome" class="text-danger"></span>
+                <input asp-for="Cpf" type="text" class="fadeIn third" oninput="mascara(this)" placeholder="CPF" minlength="4" maxlength="14" required>
+                <span asp-validation-for="Cpf" class="text-danger"></span>
+                <input asp-for="Telefone" type="text" class="fadeIn third" placeholder="Telefone" minlength="4" maxlength="20" required>
+                <span asp-validation-for="Telefone" class="text-danger"></span>
+                <input asp-for="Endereco" type="text" class="fadeIn third" placeholder="Endereço" minlength="4" maxlength="100" required>
+                <span asp-validation-for="Endereco" class="text-danger"></span>
+                <input type="checkbox" name="agreement" id="agreement" required>
+                <label for="agreement" id="agreement-label">Eu li e aceito os <a href="#">termos de uso</a></label>
+        <br /><br />
+        <input type="submit" class="fadeIn fourth" value="Cadastrar">       
+                <br />
+        </form>
+        <span style="color:@color">@ViewData["Retorno"]</span>
+            </div>
+    </div>      
+    <p class="error-validation template"></p>
+    <script src="js/scripts.js"></script>
+</body>
+</html>
+
+<script>
+    function mascara(i) {
+
+        var v = i.value;
+
+        if (isNaN(v[v.length - 1])) {
+            i.value = v.substring(0, v.length - 1);
+            return;
+        }
+
+        i.setAttribute("maxlength", "14");
+        if (v.length == 3 || v.length == 7) i.value += ".";
+        if (v.length == 11) i.value += "-";
+    }
+
+    const handlePhone = (event) => {
+        let input = event.target
+        input.value = phoneMask(input.value)
+    }
+
+    const phoneMask = (value) => {
+        if (!value) return ""
+        value = value.replace(/\D/g, '')
+        value = value.replace(/(\d{2})(\d)/, "($1) $2")
+        value = value.replace(/(\d)(\d{4})$/, "$1-$2")
+        return value
+    }
+</script>
