@@ -1,0 +1,95 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using Infraestructure.StatusSistema;
+
+@inject IHttpContextAccessor httpContext;
+
+@{
+    var nivelAcesso = 0;
+    try
+    {
+        nivelAcesso = (int)httpContext.HttpContext.Session.GetInt32(Session.Autorizacao);
+    }
+    catch
+    {
+        httpContext.HttpContext.Response.Redirect("../Usuario");
+    }
+}
+@model IEnumerable<FichaViewModel>
+
+<div style="text-align:center; padding-top:5%;">
+    <h2>Fichas médicas</h2>
+    <hr />
+</div>
+<table class="table table-bordered">
+    <thead>
+        <tr style="background-color:#f6f6f6">
+            @{
+                if (nivelAcesso > 1)
+                {
+                    <th>Ficha ID</th>
+                    <th>Nome do paciente</th>
+                }
+                else
+                {
+                    <th>Nome do médico</th>
+                }
+            }
+            <th>Detalhes</th>
+            <th>Data de inclusão</th>
+            <th>Última alteração</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            var fichaList = Model.ToList();
+
+            for (int i = 0; i < fichaList.Count(); i++)
+            {
+                <tr>
+                    @{
+                        if (nivelAcesso > 1)
+                        {
+                            <td>@fichaList[i].Id</td>
+                            <td>@fichaList[i].NomePaciente</td>
+                        }
+                        else
+                        {
+                            <td>@fichaList[i].NomeMedico</td>
+                        }
+
+                        <td>@fichaList[i].Detalhes</td>
+                        <td>@fichaList[i].DataCriacao</td>
+                        <td>@fichaList[i].DataAlteracao</td>
+                        <td>
+                            @{
+                                var json = @Html.Raw(Json.Serialize(fichaList[i])).ToString();
+                            }
+                            <form asp-controller="Ficha" method="post">
+
+                                <input type="submit" style="width:auto;" asp-action="Alterar"
+                                       asp-route-json="@json" class="btn btn-secondary btn-sm" value="Alterar" />
+
+                                <input type="submit" style="width:auto;" asp-action="GetFicha"
+                                       asp-route-json="@json" class="btn btn-secondary btn-sm" value="Visualizar" />
+
+                                <input type="submit" style="width:auto;" asp-action="Deletar"
+                                       asp-route-id="@fichaList[i].Id" class="btn btn-secondary btn-sm" value="Deletar" />
+                            </form>
+                        </td>
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<br />
+@{
+    @if (nivelAcesso > 1)
+    {
+        <form asp-controller="Ficha" method="post">
+            <input type="submit" style="width:auto;" asp-action="Cadastrar"
+                   method="post" class="btn btn-secondary btn-sm" value="Nova Ficha" />
+        </form>
+    }
+}

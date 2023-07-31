@@ -1,0 +1,77 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using Infraestructure.StatusSistema;
+
+@inject IHttpContextAccessor httpContext;
+
+@{
+    var autenticado = 0;
+    var nomeUsuario = string.Empty;
+
+    try
+    {
+        autenticado = (int)httpContext.HttpContext.Session.GetInt32(Session.Acesso);
+        if (autenticado == 1)
+            nomeUsuario = httpContext.HttpContext.Session.GetString(Session.Usuario);
+    }
+    catch
+    {
+        httpContext.HttpContext.Response.Redirect("Usuario");
+    }
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@ViewData["Title"] - MedTech</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/css/layout.css" rel="stylesheet" type="text/css" media="all">
+</head>
+<body id="top">
+    <div class="wrapper row0">
+        <div id="topbar" class="hoc clear">
+            <div class="fl_left">
+                <ul class="nospace">
+                    <li><i class="fas fa-phone rgtspace-5"></i> +55 (15) 97708-5272</li>
+                    <li><i class="far fa-envelope rgtspace-5"></i> suporte@medtech.com</li>
+                </ul>
+            </div>
+            <div class="fl_right">
+                <div>
+                    @nomeUsuario <a href="../Usuario/Index/0"> (Sair)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <partial name="_Navbar" />
+
+    @{
+        if (ViewData["Page"] != null)
+        {
+            if (ViewData["Page"].ToString() == "FichaList")
+            {
+                <partial name="_FichaList" />
+            }
+        }
+        else
+        {
+            var currentPage = @ViewData["Title"].ToString();
+            if (Context.Request.Path.Value.Contains(currentPage))
+            {
+                <partial name=_@currentPage />
+            }
+        }
+    }
+
+    <main role="main" class="pb-3">
+        @{
+            RenderBody();
+        }
+    </main>
+    <partial name="_Footer" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
