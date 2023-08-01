@@ -41,5 +41,24 @@ namespace Repository.Entities
             var usuario = _dbSet.Where(p => p.Cpf == cpf).FirstOrDefault();
             return (int)usuario.Id;
         }
+
+        public void AtualizarUsuario(Usuarios usuario)
+        {
+            var user = _dbSet.Where(p => p.Usuario == usuario.Usuario && p.Senha == usuario.Senha).FirstOrDefault();
+            if (user != null)
+            {
+                if(!string.IsNullOrEmpty(user.Nome))
+                    user.Nome = usuario.Nome;
+                if (!string.IsNullOrEmpty(user.Email))
+                    user.Email = usuario.Email;
+                if (!string.IsNullOrEmpty(user.Endereco))
+                    user.Endereco = usuario.Endereco;
+                if (!string.IsNullOrEmpty(user.Telefone))
+                    user.Telefone = usuario.Telefone;
+
+                _dbContext.Entry(user).State = EntityState.Modified;
+                _dbContext.SaveChanges();
+            }
+        }
     }
 }

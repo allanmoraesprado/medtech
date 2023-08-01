@@ -3,7 +3,6 @@ using Application.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Infraestructure.StatusSistema;
-using Infraestructure.Tools;
 using System.Reflection;
 using System.Diagnostics;
 using System;
@@ -11,6 +10,7 @@ using System.Collections;
 using Json.Net;
 using System.Collections.Generic;
 using System.Linq;
+using Infraestructure.Tools;
 
 namespace Application.Controllers
 {
@@ -77,7 +77,7 @@ namespace Application.Controllers
             {
                 var documento = GetType().Name;
                 var metodo = MethodBase.GetCurrentMethod().Name;
-                var linha = Helpers.TraceLineMessage();
+                var linha = Infraestructure.Tools.Helpers.TraceLineMessage();
                 var retorno = ex.Message;
                 var status = RetornoStatus.Erro;
 
@@ -127,7 +127,7 @@ namespace Application.Controllers
                 {
                     var documento = GetType().Name;
                     var metodo = MethodBase.GetCurrentMethod().Name;
-                    var linha = Helpers.TraceLineMessage();
+                    var linha = Infraestructure.Tools.Helpers.TraceLineMessage();
                     var retorno = ex.Message;
                     var status = RetornoStatus.Erro;
                     ViewData["Retorno"] = RetornoCodigo.ERRO_CADASTRO.ToDescription();
@@ -196,7 +196,7 @@ namespace Application.Controllers
                 {
                     var documento = GetType().Name;
                     var metodo = MethodBase.GetCurrentMethod().Name;
-                    var linha = Helpers.TraceLineMessage();
+                    var linha = Infraestructure.Tools.Helpers.TraceLineMessage();
                     var retorno = ex.Message;
                     var status = RetornoStatus.Erro;
                     ViewData["Retorno"] = RetornoCodigo.UPDATE_ERRO.ToDescription();
@@ -245,7 +245,7 @@ namespace Application.Controllers
             {
                 var documento = GetType().Name;
                 var metodo = MethodBase.GetCurrentMethod().Name;
-                var linha = Helpers.TraceLineMessage();
+                var linha = Infraestructure.Tools.Helpers.TraceLineMessage();
                 var retorno = ex.Message;
                 var status = RetornoStatus.Erro;
                 ViewData["Retorno"] = RetornoCodigo.ERRO_CADASTRO.ToDescription();

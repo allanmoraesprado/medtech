@@ -17,7 +17,7 @@ namespace Domain.Services
 
         public void AtualizarUsuario(Usuarios usuario)
         {
-            throw new NotImplementedException();
+            _userRepository.AtualizarUsuario(usuario);
         }
         public void CadastrarUsuario(Usuarios usuario)
         {

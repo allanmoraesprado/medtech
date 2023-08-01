@@ -16,5 +16,6 @@ namespace Application.Interfaces
         bool Validar(string user);
         void Cadastrar(UsuarioViewModel model);
         int BuscarRegistro(string cpf);
+        void Atualizar(UsuarioViewModel model);
     }
 }

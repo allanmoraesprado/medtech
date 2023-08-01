@@ -59,5 +59,11 @@ namespace Application.Services
         {
             return _userService.BuscarRegistroUsuario(cpf);
         }
+
+        public void Atualizar(UsuarioViewModel model)
+        {
+            var usuario = Mappers.Map<UsuarioViewModel, Usuarios>(model);
+            _userService.AtualizarUsuario(usuario);
+        }
     }
 }

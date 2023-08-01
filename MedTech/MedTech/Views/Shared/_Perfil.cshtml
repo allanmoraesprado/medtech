@@ -1,0 +1,93 @@
+﻿@using Microsoft.AspNetCore.Http;
+@using Infraestructure.StatusSistema;
+@using System.IO;
+@using System.Linq;
+
+@inject IHttpContextAccessor httpContext;
+
+@{
+    var nivelAcesso = 0;
+    try
+    {
+        nivelAcesso = (int)httpContext.HttpContext.Session.GetInt32(Session.Autorizacao);
+    }
+    catch
+    {
+        httpContext.HttpContext.Response.Redirect("../Perfil");
+    }
+    var color = "red";
+    if (ViewData["Retorno"] != null)
+    {
+        if (ViewData["Retorno"].ToString().ToLower().Contains("sucesso"))
+            color = "green";
+    }
+}
+
+@model Application.Models.UsuarioViewModel
+
+@{
+    var foto = "logo.png";
+    var directory = $"wwwroot/img/perfil/{ Model.Usuario }";
+
+    if (Directory.Exists(directory))
+    {
+        if (Directory.GetFiles(directory).Count() > 0)
+        {
+            DirectoryInfo info = new DirectoryInfo(directory);
+            FileInfo[] files = info.GetFiles().OrderBy(p => p.CreationTime).ToArray();
+            FileInfo fileInfo = files.LastOrDefault();
+            foto = fileInfo.Name;
+        }
+    }
+
+    var src = $"~/img/logo.png";
+    if (foto != "logo.png")
+        src = $"~/img/perfil/{ Model.Usuario }/{ foto }";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MedTech | Perfil</title>
+    <link rel="stylesheet" href="~/css/styles.css">
+    <link rel="stylesheet" href="~/css/useful.css">
+</head>
+<body>
+    <div id="main-container">
+        <div class="fadeIn first">
+            <span style="text-align:center; display:block">
+                <img src="@Url.Content(@src)" style="width:50%; height:50%;" id="icon" alt="Logo" />
+            </span>
+        </div>
+
+        <div style="padding-top:1%;">
+            <h1>Editar Perfil</h1>
+            <br />
+        </div>
+
+        <form action="/Perfil" method="post" enctype="multipart/form-data">
+            <label>Upload foto</label>
+            <input type="file" name="foto" />
+            <br />
+            <button type="submit" class="btn btn-secondary btn-sm">Enviar</button>
+        </form>
+        <br />
+
+        <form asp-controller="Perfil" method="post">
+            <input asp-for="Nome" type="text" class="fadeIn second" placeholder="Nome" minlength="4" maxlength="20">
+            <input asp-for="Email" type="text" class="fadeIn third" placeholder="Email" minlength="4" maxlength="60">
+            <input asp-for="Endereco" type="text" class="fadeIn third" placeholder="Endereço" minlength="4" maxlength="100">
+            <input asp-for="Telefone" type="text" class="fadeIn third" placeholder="Telefone" minlength="4" maxlength="20">
+            <br />
+            <input type="submit" asp-action="Index" class="btn btn-secondary btn-sm" value="Alterar">
+            <br />
+            <span style="color:@color">@ViewData["Retorno"]</span>
+        </form>
+        <div style="padding-top:40%;"></div>
+    </div>
+</body>
+</html>
+

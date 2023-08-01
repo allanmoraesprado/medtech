@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Diagnostics;
 using System;
 using System.Collections;
+using System.IO;
 
 namespace Application.Controllers
 {
@@ -78,7 +79,7 @@ namespace Application.Controllers
                 {
                     var documento = GetType().Name;
                     var metodo = MethodBase.GetCurrentMethod().Name;
-                    var linha = Helpers.TraceLineMessage();
+                    var linha = Infraestructure.Tools.Helpers.TraceLineMessage();
                     var retorno = ex.Message;
                     var status = RetornoStatus.Erro;
 
@@ -86,6 +87,6 @@ namespace Application.Controllers
                 }
             }
             return View(model);
-        }       
+        }        
     }
 }

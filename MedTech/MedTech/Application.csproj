@@ -16,4 +16,9 @@
     <ProjectReference Include="..\Repository\Repository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\img\perfil\" />
+    <Folder Include="wwwroot\img\perfil\robert\" />
+  </ItemGroup>
+
 </Project>

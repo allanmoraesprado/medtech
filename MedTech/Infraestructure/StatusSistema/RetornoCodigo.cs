@@ -27,6 +27,6 @@ namespace Infraestructure.StatusSistema
         [Description("Acesso negado!")]
         ACESSO_NEGADO = 10,
         [Description("Erro ao atualizar!")]
-        UPDATE_ERRO = 10
+        UPDATE_ERRO = 11
     }
 }

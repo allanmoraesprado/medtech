@@ -12,5 +12,6 @@ namespace Domain.Repositories
         int BuscarRegistroUsuario(string cpf);
         bool ValidarLogin(string user);
         bool ValidarCpf(string cpf);
+        public void AtualizarUsuario(Usuarios usuario);
     }
 }
