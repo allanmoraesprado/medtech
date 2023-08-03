@@ -23,6 +23,23 @@
 }
 
 <link rel="stylesheet" href="~/css/styles.css">
+<link rel="stylesheet" href="~/css/useful.css">
+
+<style>
+    textarea {
+        width: 100%;
+        height: 150px;
+        padding: 12px 20px;
+        box-sizing: border-box;
+        border: 2px solid #ccc;
+        border-radius: 4px;
+        background-color: #f8f8f8;
+        font-size: 16px;
+        resize: none;
+    }
+</style>
+
+
         @{
             if (nivelAcesso > 1)
             {
@@ -36,7 +53,11 @@
                     if (ViewBag.Detalhes != null)
                     {
                         <h1>Detalhes da ficha</h1><br />
-                        <textarea>@ViewBag.Detalhes</textarea>
+                        <textarea readonly>@ViewBag.Detalhes</textarea>
+                        <br />
+                        <div style="margin-left:45%;">
+                            <a class="btnn btnn-primary btnn-sm" style="text-decoration:none" href="../../Ficha/Index/1">Voltar</a>
+                        </div>
                     }
                     else
                     {
@@ -44,35 +65,46 @@
                         {
                             <h1>Cadastrar ficha</h1><br />
                             <form asp-controller="Ficha" method="post">
-                                <input asp-for="NomeMedico" type="text" class="fadeIn second" placeholder="Nome do médico" minlength="4" maxlength="20" required>
                                 <input asp-for="NomePaciente" type="text" class="fadeIn third" placeholder="Nome do paciente" minlength="4" maxlength="20" required>
                                 <input asp-for="CpfPaciente" type="text" oninput="mascara(this)" class="fadeIn third" placeholder="CPF do paciente" minlength="4" maxlength="20" required>
-                                <input asp-for="Detalhes" type="text" class="fadeIn third" placeholder="Descrição" minlength="4" maxlength="20" required>
+                                <input asp-for="Descricao" type="text" class="fadeIn third" placeholder="Descrição" minlength="4" maxlength="20" required>
+                                <textarea asp-for="Detalhes" type="text" class="fadeIn third" placeholder="Detalhes" minlength="4" maxlength="1000" required></textarea>
                                 <br />
-                                <input type="submit" asp-action="Cadastrar" class="fadeIn fourth" value="Cadastrar">
+                                <input type="submit" style="margin-top:5%;" asp-action="Cadastrar" asp-route-id="1" class="fadeIn fourth" value="Cadastrar">
                                 <br />
                                 <span style="color:@color">@ViewData["Retorno"]</span>
                             </form>
+                            <br />
+                            <div style="margin-left:45%;">
+                                <a class="btnn btnn-primary btnn-sm" style="text-decoration:none" href="../../Ficha/Index/1">Voltar</a>
+                            </div>
                         }
                         else
                         {
                             <h1>Alterar ficha</h1><br />
-                                                  <form asp-controller="Ficha" method="post">
-                                                      <input asp-for="Id" type="hidden" />
-                                                      <input asp-for="DataCriacao" type="hidden" />
-                                                      <input asp-for="DataAlteracao" type="hidden" />
-                                                      <input asp-for="PacienteId" type="hidden" />
-                                                      <input asp-for="MedicoId" type="hidden" />
+                            <form asp-controller="Ficha" method="post">
+                                <input asp-for="Id" type="hidden" />
+                                <input asp-for="DataCriacao" type="hidden" />
+                                <input asp-for="DataAlteracao" type="hidden" />
+                                <input asp-for="PacienteId" type="hidden" />
+                                <input asp-for="MedicoId" type="hidden" />
+                                <input asp-for="CpfPaciente" type="hidden" />
+                                <input asp-for="NomeMedico" type="hidden" />
+                                <input asp-for="NomePaciente" type="hidden" />
+                                <input asp-for="UsuarioPaciente" type="hidden" />
 
-                                                      <input asp-for="NomeMedico" type="text" class="fadeIn second" placeholder="Nome do médico" minlength="4" maxlength="20" required>
-                                                      <input asp-for="NomePaciente" type="text" class="fadeIn third" placeholder="Nome do paciente" minlength="4" maxlength="20" required>
-                                                      <input asp-for="CpfPaciente" type="text" oninput="mascara(this)" class="fadeIn third" placeholder="CPF do paciente" minlength="4" maxlength="20" required>
-                                                      <input asp-for="Detalhes" type="text" class="fadeIn third" placeholder="Descrição" minlength="4" maxlength="20" required>
-                                                      <br />
-                                                      <input type="submit" asp-action="Alterar" class="fadeIn fourth" value="Alterar">
-                                                      <br />
-                                                      <span style="color:@color">@ViewData["Retorno"]</span>
-                                                  </form>
+
+                                <input asp-for="Descricao" class="fadeIn third" placeholder="Descricao" required>
+                                <textarea asp-for="Detalhes" class="fadeIn third" placeholder="Detalhes" required></textarea>
+                                <br />
+                                <input type="submit" style="margin-top:5%;" asp-action="Alterar" class="fadeIn fourth" value="Alterar">
+                                <br />
+                                <span style="color:@color">@ViewData["Retorno"]</span>
+                            </form>
+                            <br />
+                            <div style="margin-left:45%;">
+                                <a class="btnn btnn-primary btnn-sm" style="text-decoration:none" href="../../Ficha/Index/1">Voltar</a>
+                            </div>                            
                         }
                     }
                 }

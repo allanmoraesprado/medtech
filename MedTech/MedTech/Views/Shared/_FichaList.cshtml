@@ -34,52 +34,60 @@
                     <th>Nome do médico</th>
                 }
             }
-            <th>Detalhes</th>
+            <th>Descrição</th>
             <th>Data de inclusão</th>
             <th>Última alteração</th>
-            <th>Ação</th>
+            @{
+                if (nivelAcesso > 1)
+                {
+                    <th>Ações</th>
+                }
+            }
         </tr>
     </thead>
     <tbody>
         @{
-            var fichaList = Model.ToList();
+            if(Model != null)
+            { 
+                var fichaList = Model.ToList();
 
-            for (int i = 0; i < fichaList.Count(); i++)
-            {
-                <tr>
-                    @{
-                        if (nivelAcesso > 1)
-                        {
-                            <td>@fichaList[i].Id</td>
-                            <td>@fichaList[i].NomePaciente</td>
-                        }
-                        else
-                        {
-                            <td>@fichaList[i].NomeMedico</td>
-                        }
-
-                        <td>@fichaList[i].Detalhes</td>
-                        <td>@fichaList[i].DataCriacao</td>
-                        <td>@fichaList[i].DataAlteracao</td>
-                        <td>
-                            @{
-                                var json = @Html.Raw(Json.Serialize(fichaList[i])).ToString();
-                            }
-                            <form asp-controller="Ficha" method="post">
-
-                                <input type="submit" style="width:auto;" asp-action="Alterar"
-                                       asp-route-json="@json" class="btn btn-secondary btn-sm" value="Alterar" />
-
-                                <input type="submit" style="width:auto;" asp-action="GetFicha"
-                                       asp-route-json="@json" class="btn btn-secondary btn-sm" value="Visualizar" />
-
-                                <input type="submit" style="width:auto;" asp-action="Deletar"
-                                       asp-route-id="@fichaList[i].Id" class="btn btn-secondary btn-sm" value="Deletar" />
-                            </form>
-                        </td>
-                    }
-                </tr>
+                for (int i = 0; i < fichaList.Count(); i++)
+                {
+                    <tr>
+                        @{
+                                if (nivelAcesso > 1)
+                                {
+                                    <td>@fichaList[i].Id</td>
+                                    <td>@fichaList[i].NomePaciente</td>
+                                }
+                                else
+                                {
+                                    <td>@fichaList[i].NomeMedico</td>
+                                }
+                                <td>@fichaList[i].Descricao</td>
+                                <td>@fichaList[i].DataCriacao</td>
+                                <td>@fichaList[i].DataAlteracao</td>
+                                if (nivelAcesso > 1)
+                                {
+                                    var json = @Html.Raw(Json.Serialize(fichaList[i])).ToString();
+                                    <td>
+                                        <form asp-controller="Ficha" method="post">
+                                            &nbsp;
+                                            <input type="submit" style="width: auto; margin-left:8%;" asp-action="Alterar"
+                                                   asp-route-json="@json" class="btn btn-secondary btn-sm" value="Alterar" />
+                                            &nbsp;
+                                            <input type="submit" style="width: auto; margin-left: 8%;" asp-action="GetFicha"
+                                                   asp-route-json="@json" class="btn btn-secondary btn-sm" value="Detalhes" />
+                                            &nbsp;
+                                            <input type="submit" style="width: auto; margin-left: 8%;" asp-action="Deletar"
+                                                   asp-route-id="@fichaList[i].Id" class="btn btn-secondary btn-sm" value="Deletar" />
+                                        </form>
+                                    </td>
+                                }
+                }
+                    </tr>
             }
+                          }
         }
     </tbody>
 </table>
@@ -88,8 +96,10 @@
     @if (nivelAcesso > 1)
     {
         <form asp-controller="Ficha" method="post">
-            <input type="submit" style="width:auto;" asp-action="Cadastrar"
-                   method="post" class="btn btn-secondary btn-sm" value="Nova Ficha" />
+        &nbsp;
+        <input type="submit" style="width:auto;" asp-action="Cadastrar" asp-route-id="0"
+        method="post" class="btn btn-secondary btn-sm" value="Nova Ficha" />
         </form>
     }
 }
+<div style="padding-top:40%;"></div>

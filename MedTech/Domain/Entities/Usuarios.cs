@@ -15,6 +15,6 @@ namespace Domain.Entities
         public string Telefone { get; set; }
         public string Endereco { get; set; }
         public string Foto { get; set; }
-        public int? RoleId { get; set; }      
+        public int? RoleId { get; set; } 
     }
 }

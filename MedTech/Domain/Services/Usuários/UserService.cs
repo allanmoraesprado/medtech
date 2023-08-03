@@ -25,7 +25,7 @@ namespace Domain.Services
         }
         public Usuarios BuscarUsuario(int id)
         {
-            throw new NotImplementedException();
+            return _userRepository.BuscarUsuario(id);
         }
         public Usuarios BuscarUsuario(string user, string senha)
         {

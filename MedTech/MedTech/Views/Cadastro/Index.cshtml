@@ -50,13 +50,16 @@
                 <span asp-validation-for="Endereco" class="text-danger"></span>
                 <input type="checkbox" name="agreement" id="agreement" required>
                 <label for="agreement" id="agreement-label">Eu li e aceito os <a href="#">termos de uso</a></label>
-        <br /><br />
-        <input type="submit" class="fadeIn fourth" value="Cadastrar">       
-                <br />
-        </form>
-        <span style="color:@color">@ViewData["Retorno"]</span>
+                <br /><br />
+                <input type="submit" class="fadeIn fourth" value="Cadastrar">
+                <span style="color:@color; margin-left:23%;">@ViewData["Retorno"]</span>
+            </form>
+            <br /><br />
+            <div style="margin-left:43%;">
+                <a class="btnn btnn-primary btnn-sm" style="text-decoration:none" href="../Usuario">Voltar</a>
             </div>
-    </div>      
+        </div>
+    </div>
     <p class="error-validation template"></p>
     <script src="js/scripts.js"></script>
 </body>

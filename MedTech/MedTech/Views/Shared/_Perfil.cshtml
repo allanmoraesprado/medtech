@@ -45,16 +45,9 @@
         src = $"~/img/perfil/{ Model.Usuario }/{ foto }";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>MedTech | Perfil</title>
-    <link rel="stylesheet" href="~/css/styles.css">
-    <link rel="stylesheet" href="~/css/useful.css">
-</head>
+<link rel="stylesheet" href="~/css/styles.css">
+<link rel="stylesheet" href="~/css/useful.css">
+
 <body>
     <div id="main-container">
         <div class="fadeIn first">
@@ -63,31 +56,82 @@
             </span>
         </div>
 
-        <div style="padding-top:1%;">
-            <h1>Editar Perfil</h1>
-            <br />
-        </div>
+        @{
+            if (ViewBag.Details != null)
+            {
+                if (ViewBag.Details)
+                {
+                    <div style="padding-top:10%;">
+                        <h1>Perfil</h1>
+                        <br />
+                    </div>
+                }
+            }
+            else
+            {
+                <div style="padding-top:10%;">
+                    <h1>Editar Perfil</h1>
+                    <br />
+                </div>
 
-        <form action="/Perfil" method="post" enctype="multipart/form-data">
-            <label>Upload foto</label>
-            <input type="file" name="foto" />
-            <br />
-            <button type="submit" class="btn btn-secondary btn-sm">Enviar</button>
-        </form>
-        <br />
+                <form action="/Perfil" method="post" enctype="multipart/form-data">
+                    <label>Upload foto</label>
+                    <input type="file" name="foto" />
+                    <br />
+                    <button type="submit" class="btn btn-secondary btn-sm">Enviar</button>
+                </form>
+                <br />
+            }
+        }
+        @{
+            if (ViewBag.Details != null)
+            {
+                if (ViewBag.Details)
+                {
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr style="background-color:#f6f6f6">
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Endereço</th>
+                                <th>Telefone</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@Model.Nome</td>
+                                <td>@Model.Email</td>
+                                <td>@Model.Endereco</td>
+                                <td>@Model.Telefone</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <br />
+                    <ul class="nospace inline pushright">
+                        <li><a class="btn" style="float:right" href="../../Perfil">Editar</a></li>
+                    </ul>
+                }
+            }
+            else
+            {
 
-        <form asp-controller="Perfil" method="post">
-            <input asp-for="Nome" type="text" class="fadeIn second" placeholder="Nome" minlength="4" maxlength="20">
-            <input asp-for="Email" type="text" class="fadeIn third" placeholder="Email" minlength="4" maxlength="60">
-            <input asp-for="Endereco" type="text" class="fadeIn third" placeholder="Endereço" minlength="4" maxlength="100">
-            <input asp-for="Telefone" type="text" class="fadeIn third" placeholder="Telefone" minlength="4" maxlength="20">
-            <br />
-            <input type="submit" asp-action="Index" class="btn btn-secondary btn-sm" value="Alterar">
-            <br />
-            <span style="color:@color">@ViewData["Retorno"]</span>
-        </form>
+                <form asp-controller="Perfil" method="post">
+                    <input asp-for="Nome" type="text" class="fadeIn second" placeholder="Nome" minlength="4" maxlength="20">
+                    <input asp-for="Email" type="text" class="fadeIn third" placeholder="Email" minlength="4" maxlength="60">
+                    <input asp-for="Endereco" type="text" class="fadeIn third" placeholder="Endereço" minlength="4" maxlength="100">
+                    <input asp-for="Telefone" type="text" class="fadeIn third" placeholder="Telefone" minlength="4" maxlength="20">
+                    <br />
+                    <input type="submit" asp-action="Index" class="btn btn-secondary btn-sm" value="Alterar">
+                    <br />
+                    <span style="color:@color">@ViewData["Retorno"]</span>
+                </form>
+                <br />               
+                <div style="margin-left:45%;">
+                    <a class="btnn btnn-primary btnn-sm" style="text-decoration:none" href="../../Perfil/Index/1">Voltar</a>
+                </div>
+            }
+        }
         <div style="padding-top:40%;"></div>
     </div>
 </body>
-</html>
 

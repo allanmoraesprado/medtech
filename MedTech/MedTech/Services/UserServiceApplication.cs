@@ -21,7 +21,9 @@ namespace Application.Services
         }
         public UsuarioViewModel Buscar(int id)
         {
-            throw new NotImplementedException();
+            var usuario = _userService.BuscarUsuario(id);
+            var model = Mappers.Map<Usuarios, UsuarioViewModel>(usuario);
+            return model;
         }
         public UsuarioViewModel Buscar(string user, string senha)
         {

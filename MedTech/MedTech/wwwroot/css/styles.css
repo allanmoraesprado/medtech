@@ -4,12 +4,11 @@
   padding: 0;
   box-sizing: border-box;
   font-family: Helvetica, sans-serif;
-  color: #323232;
   border: none;
 }
 
 html {
-    background-color: #56baed;
+    background-image: url("../img/bg.jpg");
 }
 
 input, label {
@@ -20,13 +19,6 @@ input, label {
 
 a {
   color: #56baed;
-}
-
-body {
-  padding-top: 5vh;
-  background-image: url('../img/bg-register-page.jpg');
-  background-size: cover;
-  background-position-y: -150px;
 }
 
 /* form */

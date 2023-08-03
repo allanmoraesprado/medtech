@@ -27,6 +27,10 @@ namespace Infraestructure.StatusSistema
         [Description("Acesso negado!")]
         ACESSO_NEGADO = 10,
         [Description("Erro ao atualizar!")]
-        UPDATE_ERRO = 11
+        UPDATE_ERRO = 11,
+        [Description("CPF incorreto!")]
+        CPF_INCORRETO = 12,
+        [Description("Nome e CPF não são do mesmo paciente!")]
+        DADOS_INVALIDOS = 13
     }
 }

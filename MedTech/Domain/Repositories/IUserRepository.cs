@@ -7,6 +7,7 @@ namespace Domain.Repositories
 {
     public interface IUserRepository : IRepository<Usuarios>
     {
+        Usuarios BuscarUsuario(int id);
         Usuarios BuscarUsuario(string user, string senha);
         int BuscarUsuarioId(string user, string senha);
         int BuscarRegistroUsuario(string cpf);

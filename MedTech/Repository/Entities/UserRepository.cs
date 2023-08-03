@@ -13,6 +13,11 @@ namespace Repository.Entities
     {
         public UserRepository(DbContext dbContext) : base(dbContext) { }
 
+        public Usuarios BuscarUsuario(int id)
+        {
+            var usuario = _dbSet.Where(p => p.Id == id).FirstOrDefault();
+            return usuario;
+        }
         public Usuarios BuscarUsuario(string user, string senha)
         {
             var usuario = _dbSet.Where(p => p.Usuario == user && p.Senha == senha).FirstOrDefault();
@@ -47,13 +52,13 @@ namespace Repository.Entities
             var user = _dbSet.Where(p => p.Usuario == usuario.Usuario && p.Senha == usuario.Senha).FirstOrDefault();
             if (user != null)
             {
-                if(!string.IsNullOrEmpty(user.Nome))
+                if(!string.IsNullOrEmpty(usuario.Nome))
                     user.Nome = usuario.Nome;
-                if (!string.IsNullOrEmpty(user.Email))
+                if (!string.IsNullOrEmpty(usuario.Email))
                     user.Email = usuario.Email;
-                if (!string.IsNullOrEmpty(user.Endereco))
+                if (!string.IsNullOrEmpty(usuario.Endereco))
                     user.Endereco = usuario.Endereco;
-                if (!string.IsNullOrEmpty(user.Telefone))
+                if (!string.IsNullOrEmpty(usuario.Telefone))
                     user.Telefone = usuario.Telefone;
 
                 _dbContext.Entry(user).State = EntityState.Modified;

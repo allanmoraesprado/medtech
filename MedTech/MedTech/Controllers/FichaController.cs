@@ -86,9 +86,9 @@ namespace Application.Controllers
             return View(model);
         }
         [HttpPost]
-        public IActionResult Cadastrar(FichaViewModel model)
+        public IActionResult Cadastrar(FichaViewModel model, int? id)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && id == 1)
             {
                 try
                 {
@@ -104,13 +104,33 @@ namespace Application.Controllers
                             {
                                 model.PacienteId = pacienteId;
                                 var username = _httpContextAccessor.HttpContext.Session.GetString(Session.Usuario);
-                                var senha = _httpContextAccessor.HttpContext.Session.GetString(Session.Senha);
+                                var senha = _httpContextAccessor.HttpContext.Session.GetString(Session.Senha);                               
                                 var medicoId = _userServiceApplication.BuscarId(username, senha);
-                                model.MedicoId = medicoId;
-                                model.DataCriacao = DateTime.Now.ToString();
+                                var usuario = _userServiceApplication.Buscar(medicoId);
+                                var paciente = _userServiceApplication.Buscar(pacienteId);
 
-                                _medServiceApplication.Cadastrar(model);
-                                ViewData["Retorno"] = RetornoCodigo.SUCESSO_CADASTRO.ToDescription();
+                                if (model.CpfPaciente.Replace("-", ".") == paciente.Cpf)
+                                {
+                                    if (model.NomePaciente == paciente.Nome)
+                                    {
+                                        model.UsuarioPaciente = paciente.Usuario;
+                                        model.NomeMedico = usuario.Nome;
+                                        model.MedicoId = medicoId;
+                                        model.DataCriacao = DateTime.Now.ToString();
+                                        model.Id = null;
+
+                                        _medServiceApplication.Cadastrar(model);
+                                        ViewData["Retorno"] = RetornoCodigo.SUCESSO_CADASTRO.ToDescription();
+                                    }
+                                    else
+                                    {
+                                        ViewData["Retorno"] = RetornoCodigo.DADOS_INVALIDOS.ToDescription();
+                                    }
+                                }
+                                else
+                                {
+                                    ViewData["Retorno"] = RetornoCodigo.CPF_INCORRETO.ToDescription();
+                                }
                             }
                             else
                             {
@@ -233,7 +253,7 @@ namespace Application.Controllers
                             ViewData["Retorno"] = RetornoCodigo.FICHA_DELETADA.ToDescription();
                             ViewData["Page"] = "FichaList";                            
                         }
-                        return View(fichas);
+                        return Redirect("../../Ficha/Index/1");
                     }
                     else
                     {

@@ -29,7 +29,7 @@ namespace Application.Controllers
             _httpContextAccessor = httpContext;
         }
 
-        public IActionResult Index(UsuarioViewModel model, IFormFile foto)
+        public IActionResult Index(UsuarioViewModel model, IFormFile foto, int? id)
         {
             try
             {
@@ -49,28 +49,36 @@ namespace Application.Controllers
 
                         if (usuario != null)
                         {
-                            if (foto != null)
+                            if (id == null)
                             {
-                                var dir = Directory.GetCurrentDirectory() + "\\wwwroot\\img\\perfil\\" + usuario.Usuario + "\\";
-                                var nomeImagem = Guid.NewGuid().ToString() + "_" + foto.FileName;
+                                if (foto != null)
+                                {
+                                    var dir = Directory.GetCurrentDirectory() + "\\wwwroot\\img\\perfil\\" + usuario.Usuario + "\\";
+                                    var nomeImagem = Guid.NewGuid().ToString() + "_" + foto.FileName;
 
-                                if (!Directory.Exists(dir))
-                                {
-                                    Directory.CreateDirectory(dir);
+                                    if (!Directory.Exists(dir))
+                                    {
+                                        Directory.CreateDirectory(dir);
+                                    }
+                                    using (var stream = System.IO.File.Create(dir + nomeImagem))
+                                    {
+                                        foto.CopyToAsync(stream);
+                                    }
                                 }
-                                using (var stream = System.IO.File.Create(dir + nomeImagem))
+                                else
                                 {
-                                    foto.CopyToAsync(stream);
+                                    if (Helpers.Tools.ValidUserModel(model))
+                                    {
+                                        model.Senha = senha;
+                                        _userServiceApplication.Atualizar(model);
+                                        ViewData["Retorno"] = RetornoCodigo.DADOS_ATUALIZADOS.ToDescription();
+                                    }
                                 }
                             }
                             else
                             {
-                                if (Helpers.Tools.ValidUserModel(model))
-                                {
-                                    model.Senha = senha;
-                                    _userServiceApplication.Atualizar(model);
-                                    ViewData["Retorno"] = RetornoCodigo.DADOS_ATUALIZADOS.ToDescription();
-                                }
+                                ViewBag.Details = true;
+                                model = usuario;
                             }
                         }
                         else
